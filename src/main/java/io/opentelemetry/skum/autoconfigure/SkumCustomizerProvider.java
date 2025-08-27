@@ -5,6 +5,7 @@ import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizer;
 import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizerProvider;
 import io.opentelemetry.sdk.trace.SpanProcessor;
 import io.opentelemetry.skum.TheSwamp;
+import io.opentelemetry.skum.trace.SkumSampler;
 
 @AutoService(AutoConfigurationCustomizerProvider.class)
 public class SkumCustomizerProvider implements AutoConfigurationCustomizerProvider {
@@ -15,5 +16,9 @@ public class SkumCustomizerProvider implements AutoConfigurationCustomizerProvid
     SpanProcessor skumSpanProcessor = TheSwamp.instance.getSpanProcessor();
     autoConfiguration.addSpanProcessorCustomizer(
         (existing, config) -> SpanProcessor.composite(existing, skumSpanProcessor));
+
+    autoConfiguration.addSamplerCustomizer((existing,config) -> {
+      return TheSwamp.instance.buildSkumSampler(existing);
+    });
   }
 }
