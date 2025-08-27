@@ -4,12 +4,26 @@ import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.trace.ReadWriteSpan;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SpanProcessor;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SkumSpanProcessor implements SpanProcessor {
 
+  private final List<SpanProcessor> delegates = new CopyOnWriteArrayList<>();
+
+  public void add(SpanProcessor spanProcessor) {
+    delegates.add(spanProcessor);
+  }
+
+  public void remove(SpanProcessor spanProcessor){
+    delegates.remove(spanProcessor);
+  }
+
   @Override
   public void onStart(Context parentContext, ReadWriteSpan span) {
-    span.setAttribute("skum.test", "flibber");
+    for (SpanProcessor spanProcessor : delegates) {
+      spanProcessor.onStart(parentContext, span);
+    }
   }
 
   @Override
@@ -19,7 +33,9 @@ public class SkumSpanProcessor implements SpanProcessor {
 
   @Override
   public void onEnd(ReadableSpan span) {
-
+    for (SpanProcessor spanProcessor : delegates) {
+      spanProcessor.onEnd(span);
+    }
   }
 
   @Override

@@ -4,7 +4,7 @@ import com.google.auto.service.AutoService;
 import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizer;
 import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizerProvider;
 import io.opentelemetry.sdk.trace.SpanProcessor;
-import io.opentelemetry.skum.trace.SkumSpanProcessor;
+import io.opentelemetry.skum.TheSwamp;
 
 @AutoService(AutoConfigurationCustomizerProvider.class)
 public class SkumCustomizerProvider implements AutoConfigurationCustomizerProvider {
@@ -12,7 +12,7 @@ public class SkumCustomizerProvider implements AutoConfigurationCustomizerProvid
   @Override
   public void customize(AutoConfigurationCustomizer autoConfiguration) {
 
-    SpanProcessor skumSpanProcessor = new SkumSpanProcessor();
+    SpanProcessor skumSpanProcessor = TheSwamp.instance.getSpanProcessor();
     autoConfiguration.addSpanProcessorCustomizer(
         (existing, config) -> SpanProcessor.composite(existing, skumSpanProcessor));
   }
