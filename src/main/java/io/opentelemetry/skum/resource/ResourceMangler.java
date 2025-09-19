@@ -13,6 +13,8 @@ import java.util.function.Consumer;
 
 /**
  * Jackin' up the shared state since 2025! (•̀ᴗ•́)و
+ *
+ * This may not work with non-otlp exporters.
  */
 public class ResourceMangler {
 
