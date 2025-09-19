@@ -17,6 +17,7 @@ _Use with your own dumb indiscretion!_
 
 ## other hacktastic ideas:
 
+* ~~span tail mangler~~ - we have this already, see `ExtendedSpanProcessor` zoinks
 * exporter changeroos
 * BSP changeroos?
 * update/insert/alter metric views?
