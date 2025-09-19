@@ -85,6 +85,7 @@ public class ResourceMangler {
 
   private Resource getResource() throws NoSuchFieldException, IllegalAccessException {
     Tracer tracer = otel.getTracer("skum");
+    //Note: This does indeed seem to also be shared with the MeterProviderSharedState
     Field sharedStateField = tracer.getClass().getDeclaredField("sharedState");
     sharedStateField.setAccessible(true);
     Object sharedState = sharedStateField.get(tracer);

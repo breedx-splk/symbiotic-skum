@@ -17,5 +17,6 @@ _Use with your own dumb indiscretion!_
 
 ## other hacktastic ideas:
 
-* mutable resource - either package and extend/override or use instrumentation
-* mutable resource - maybe just use reflection?
+* exporter changeroos
+* BSP changeroos?
+* update/insert/alter metric views?
