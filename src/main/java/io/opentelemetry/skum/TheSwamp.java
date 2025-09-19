@@ -1,6 +1,8 @@
 package io.opentelemetry.skum;
 
+import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
+import io.opentelemetry.skum.trace.SkumPropagator;
 import io.opentelemetry.skum.trace.SkumSampler;
 import io.opentelemetry.skum.trace.SkumSpanProcessor;
 import java.util.concurrent.atomic.AtomicReference;
@@ -12,8 +14,8 @@ public class TheSwamp {
   public final static TheSwamp instance = buildInstance();
 
   private final SkumSpanProcessor skumSpanProcessor;
-
   private final AtomicReference<SkumSampler> skumSampler = new AtomicReference<>();
+  private final SkumPropagator skumPropagator = new SkumPropagator();
 
   public SkumSpanProcessor getSpanProcessor() {
     return skumSpanProcessor;
@@ -25,15 +27,19 @@ public class TheSwamp {
     return skumSampler.get();
   }
 
+  public TextMapPropagator getPropagator() {
+    return skumPropagator;
+  }
+
   // internal method
   public Sampler buildSkumSampler(Sampler existing) {
     skumSampler.set(new SkumSampler(existing));
     return skumSampler.get();
   }
-
   private TheSwamp(SkumSpanProcessor skumSpanProcessor){
     this.skumSpanProcessor = skumSpanProcessor;
   }
+
   // Might later come from factory or builder or something nifty
 
   private static TheSwamp buildInstance() {
